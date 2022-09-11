@@ -1,29 +1,14 @@
-import { newGain } from "../controller/walletController.js";
-import { newExit } from "../schemas/walletSchema.js";
+import { newTransaction} from "../schemas/walletSchema.js";
 
-export async function validationNewGain(req, res, next){
-    const gain = req.body
+export async function validationNewTransaction(req, res, next){
+    const transaction = req.body
     try {
-        const validation = await newGain.validate(gain, {abortEarly: false})
+        const validation = await newTransaction.validate(transaction, {abortEarly: false})
         if(validation.error){
             return res.status(422).send(validation.error.details.map(detail => detail.message))
         }
     } catch (error) {
         console.log(error);
-        return res.sendStatus(500)
-    }
-    next()
-}
-
-export async function validationNewExit(req, res, next){
-    const exit = req.body
-    try {
-        const validation = await newExit.validate(exit, {abortEarly: false})
-        if(validation.error){
-            return res.status(422).send(validation.error.details.map(detail => detail.message))
-        }
-    } catch (error) {
-        console.log(error)
         return res.sendStatus(500)
     }
     next()

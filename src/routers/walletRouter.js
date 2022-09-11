@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { newExit, newGain, wallet } from "../controller/walletController.js";
-import { validationNewExit, validationNewGain } from "../middlewares/walletMiddleware.js";
+import { newTransaction, wallet } from "../controller/walletController.js";
+import { validationNewTransaction} from "../middlewares/walletMiddleware.js";
 
 const walletRouter = Router();
 walletRouter.get("/wallet", wallet)
-walletRouter.post("/gain", validationNewGain, newGain)
-walletRouter.post("/exit", validationNewExit, newExit)
+walletRouter.post("/transaction", validationNewTransaction, newTransaction)
 
 export default walletRouter;

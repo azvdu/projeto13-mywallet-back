@@ -1,13 +1,9 @@
 import Joi from "joi";
 
-export const newGain = Joi.object({
-    value: Joi.number().required(),
-    description: Joi.string().required()
+export const newTransaction = Joi.object({
+    value: Joi.string().pattern(/^[0-9]+$/).required(),
+    description: Joi.string().required(),
+    type: Joi.string().valid('gain', 'exit').required()
 })
 
-export const newExit = Joi.object({
-    value: Joi.number().required(),
-    description: Joi.string().required()
-})
-
-export default {newGain, newExit}
+export default {newTransaction}

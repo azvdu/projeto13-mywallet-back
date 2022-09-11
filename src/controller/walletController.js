@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import db from "../config/db.js";
 
 export async function wallet(req, res){
@@ -23,31 +25,28 @@ export async function wallet(req, res){
     }
 }
 
-export async function newGain(req, res){
-    const gain = req.body;
+export async function newTransaction(req, res){
+    const transaction = req.body;
+    const token = req.headers["token"]
     try {
-        await db.collection('gains').insertOne({
-            value: gain.value,
-            description: gain.description
+        const validToken = await db.collection('sessions').findOne({
+            token: token
         })
+        if(!validToken){
+            return res.sendStatus(401)
+        }
+        await db.collection('wallet').insertOne({
+            userId: validToken.userId,
+            value: transaction.value,
+            description: transaction.description,
+            type: transaction.type,
+            date: dayjs().format('DD/MM')
+        })
+
         return res.sendStatus(201)
 
     } catch (error) {
         console.log(error);
         return res.sendStatus(500);
-    }
-}
-
-export async function newExit(req, res){
-    const exit = req.body;
-    try {
-        await db.collection('exits').insertOne({
-            value: exit.value,
-            description: exit.description
-        })
-        return res.sendStatus(201)
-    } catch (error) {
-        console.log(error)
-        return res.sendStatus(500)
     }
 }
